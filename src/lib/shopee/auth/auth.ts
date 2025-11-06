@@ -10,14 +10,14 @@ export const GetAuthUrl = (redirectUri: string) => {
     const config = getConfig();
 
     const baseUrl = config.shoppeUrl;
-    const authPath = '/api/v2/shop/auth_partner';
+    const authPath = 'api/v2/shop/auth_partner';
     const url = `${baseUrl}/${authPath}`;
-    const [sign, timestamp] = createSign(url);
+    const [sign, timestamp] = createSign(authPath);
     const queryParams = {
         partner_id: config.partnerId,
         timestamp: timestamp!.toString(),
         sign: sign!.toString(),
-        redirect_uri: redirectUri,
+        redirect: redirectUri,
     };
 
     const queryString = new URLSearchParams(queryParams)
@@ -31,7 +31,7 @@ export const ExchangeOttCode = async (code: string, id: number, type: 'shop' | '
     const config = getConfig();
 
 
-    const exchangePath = '/api/v2/auth/token/get';
+    const exchangePath = 'api/v2/auth/token/get';
     const partner_id = config.partnerId;
     const [sign, timestamp] = createSign(exchangePath);
     
@@ -66,7 +66,7 @@ export const ExchangeOttCode = async (code: string, id: number, type: 'shop' | '
 export const RefreshAccessToken = async (refreshToken: string, id: number, type: 'shop' | 'merchant') => {
     const config = getConfig();
 
-    const refreshPath = '/api/v2/auth/token/refresh';
+    const refreshPath = 'api/v2/auth/access_token/get';
     const partner_id = config.partnerId;
     const [sign, timestamp] = createSign(refreshPath);
     const query = new URLSearchParams({
@@ -76,7 +76,7 @@ export const RefreshAccessToken = async (refreshToken: string, id: number, type:
     })
 
     const body: Record<string, string | number> = {
-        partner_id: partner_id,
+        partner_id: parseInt(partner_id),
         refresh_token: refreshToken,
     }
 

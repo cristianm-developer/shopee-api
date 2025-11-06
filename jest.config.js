@@ -1,5 +1,7 @@
 import { createDefaultPreset } from "ts-jest";
+import dotenv from 'dotenv';
 
+dotenv.config();
 const tsJestTransformCfg = createDefaultPreset({ useESM: true}).transform;
 
 /** @type {import("jest").Config} **/
