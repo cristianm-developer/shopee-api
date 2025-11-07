@@ -1,9 +1,9 @@
 import { getConfig } from "../init.js";
-import crypto from 'crypto';
+import { createHmac } from 'crypto';
 
 
 const config = getConfig();
-export const createSign = (path: string, userInfo?: {accessToken?: string, shopId?: number}) : [string, number] => {
+export const createSign = (path: string, userInfo: {accessToken?: string, shopId?: number} = {}) : [string, number] => {
 
     
     const timestamp = Math.floor(Date.now() / 1000);
@@ -18,7 +18,7 @@ export const createSign = (path: string, userInfo?: {accessToken?: string, shopI
         baseString += `${userInfo.shopId}`;
     }
 
-    const hmac = crypto.createHmac('sha256', partnerKey);
+    const hmac = createHmac('sha256', partnerKey);
     hmac.update(baseString);
 
     const sign = hmac.digest('hex');
